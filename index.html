@@ -405,16 +405,16 @@
                 </button>
             </div>
             
-            <p class="text-xs text-zinc-400 mb-4">Firebase 관리자 계정이 없더라도 비밀번호 <code class="text-crimson-400 font-mono">admin</code>으로 편집 모드가 활성화됩니다.</p>
+            <p class="text-xs text-zinc-400 mb-4">등록된 Firebase 관리자 계정(이메일 및 비밀번호)으로 로그인해야 수정 모드가 활성화됩니다.</p>
 
             <div class="space-y-4">
                 <div>
-                    <label class="block text-xs font-bold text-zinc-300 mb-1.5">이메일 계정 (선택)</label>
+                    <label class="block text-xs font-bold text-zinc-300 mb-1.5">이메일 계정 <span class="text-crimson-400">*</span></label>
                     <input type="email" id="admin-email-input" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600 font-sans" placeholder="admin@example.com">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-zinc-300 mb-1.5">비밀번호</label>
+                    <label class="block text-xs font-bold text-zinc-300 mb-1.5">비밀번호 <span class="text-crimson-400">*</span></label>
                     <input type="password" id="admin-password-input" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600 font-sans" placeholder="••••••••">
                 </div>
 
@@ -423,7 +423,7 @@
                 </div>
 
                 <button id="admin-login-submit-btn" onclick="verifyAdminPassword()" class="w-full py-3 rounded-xl bg-crimson-800 hover:bg-crimson-700 text-white font-bold text-xs transition-all shadow-lg shadow-crimson-950/80 flex items-center justify-center gap-2">
-                    <span>인증 및 관리 모드 활성화</span>
+                    <span>로그인 및 관리 모드 활성화</span>
                 </button>
             </div>
         </div>
@@ -777,21 +777,27 @@
 
         // Initialize Data Sync
         function initDataSync() {
-            onSnapshot(siteDocRef, (snapshot) => {
-                if (snapshot.exists()) {
-                    const data = snapshot.data();
-                    if (data.about) window.state.about = data.about;
-                    if (data.schedule) window.state.schedule = data.schedule;
-                    if (data.portfolio) window.state.portfolio = data.portfolio;
-                    if (data.avatarImg !== undefined) window.state.avatarImg = data.avatarImg;
-                    if (data.bannerImg !== undefined) window.state.bannerImg = data.bannerImg;
-                }
-                renderAll();
-            }, (error) => {
-                console.warn("Firestore Sync Fallback to Local Storage:", error);
+            try {
+                onSnapshot(siteDocRef, (snapshot) => {
+                    if (snapshot.exists()) {
+                        const data = snapshot.data();
+                        if (data.about) window.state.about = data.about;
+                        if (data.schedule) window.state.schedule = data.schedule;
+                        if (data.portfolio) window.state.portfolio = data.portfolio;
+                        if (data.avatarImg !== undefined) window.state.avatarImg = data.avatarImg;
+                        if (data.bannerImg !== undefined) window.state.bannerImg = data.bannerImg;
+                    }
+                    renderAll();
+                }, (error) => {
+                    console.warn("Firestore Sync Fallback to Local Storage:", error.message);
+                    loadLocalData();
+                    renderAll();
+                });
+            } catch (err) {
+                console.warn("Firestore initialization error, using local storage:", err);
                 loadLocalData();
                 renderAll();
-            });
+            }
         }
 
         function loadLocalData() {
@@ -1070,36 +1076,35 @@
             const passwordInput = document.getElementById('admin-password-input').value.trim();
             const errorMsg = document.getElementById('admin-error-msg');
 
-            if (!passwordInput) {
+            // 이메일과 비밀번호 필수 입력 검증
+            if (!emailInput || !passwordInput) {
                 if (errorMsg) {
-                    errorMsg.innerText = "비밀번호를 입력해주세요.";
+                    errorMsg.innerText = "이메일과 비밀번호를 모두 입력해주세요.";
                     errorMsg.classList.remove('hidden');
                 }
                 return;
             }
 
-            if (emailInput) {
-                try {
-                    await signInWithEmailAndPassword(auth, emailInput, passwordInput);
-                    window.isAdmin = true;
-                    closeAdminModal();
-                    window.renderAll();
-                    return;
-                } catch (e) {
-                    console.log("Firebase Email Login Attempt Failed, falling back:", e);
-                }
-            }
-
-            // Simple admin verification fallback
-            if (passwordInput === "admin" || passwordInput === "1234") {
+            // Firebase 계정 로그인 시도
+            try {
+                await signInWithEmailAndPassword(auth, emailInput, passwordInput);
                 window.isAdmin = true;
                 if (errorMsg) errorMsg.classList.add('hidden');
                 closeAdminModal();
                 window.renderAll();
                 window.showToast("🔑 관리자로 로그인 되었습니다.");
-            } else {
+            } catch (e) {
+                console.warn("Firebase Auth attempt failed:", e.code || e.message);
                 if (errorMsg) {
-                    errorMsg.innerText = "비밀번호가 올바르지 않습니다.";
+                    if (e.code === 'auth/invalid-email') {
+                        errorMsg.innerText = "유효하지 않은 이메일 형식입니다.";
+                    } else if (e.code === 'auth/wrong-password' || e.code === 'auth/user-not-found' || e.code === 'auth/invalid-credential') {
+                        errorMsg.innerText = "이메일 또는 비밀번호가 올바르지 않습니다.";
+                    } else if (e.code === 'auth/too-many-requests') {
+                        errorMsg.innerText = "시도가 너무 많습니다. 잠시 후 다시 시도해주세요.";
+                    } else {
+                        errorMsg.innerText = "로그인 실패: 이메일과 비밀번호를 확인해주세요.";
+                    }
                     errorMsg.classList.remove('hidden');
                 }
             }
