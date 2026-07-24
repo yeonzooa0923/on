@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="ko" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ON 3D - Vtuber Profile & Portfolio</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cardBg: '#121215',
+                        lightBlack: '#1a1a1e',
+                        cardBorder: '#27272a',
+                        crimson: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            200: '#fecdd3',
+                            300: '#fda4af',
+                            400: '#fb7185',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                            800: '#9f1239',
+                            900: '#881337',
+                            950: '#4c0519',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- FontAwesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #09090b;
+            color: #f4f4f5;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Clean Dark Background for Transparent PNG Assets (No Checkerboard Grid) */
+        .png-checkerboard {
+            background-color: #121215;
+            background-image: none;
+        }
+
+        .crimson-glow {
+            box-shadow: 0 0 25px -5px rgba(159, 18, 57, 0.4);
+        }
+
+        .crimson-glow-sm {
+            box-shadow: 0 0 15px -3px rgba(159, 18, 57, 0.3);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #09090b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9f1239;
+        }
+
+        .hover-lift {
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.6);
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-zinc-100 min-h-screen flex flex-col justify-between selection:bg-crimson-800 selection:text-white">
+
+    <!-- Toast Notification Message -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-zinc-900 border border-crimson-700/80 text-white text-xs font-bold shadow-2xl transition-all duration-300 transform translate-y-20 opacity-0 pointer-events-none">
+        <i class="fa-solid fa-circle-check text-crimson-400 text-base"></i>
+        <span id="toast-message">알림 메시지</span>
+    </div>
+
+    <!-- Navigation Bar Header -->
+    <header class="sticky top-0 z-40 w-full bg-zinc-950/80 backdrop-blur-xl border-b border-cardBorder/80">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2.5 group">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-crimson-700 to-crimson-950 flex items-center justify-center border border-crimson-600/50 group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-cube text-white text-sm"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-base font-black tracking-wider text-white flex items-center gap-1.5">
+                        ON <span class="text-xs font-normal text-crimson-400">3D</span>
+                    </span>
+                    <span class="text-[9px] text-zinc-400 font-mono tracking-tight">VTUBER SPECIALIST</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center gap-1 bg-cardBg p-1.5 rounded-2xl border border-cardBorder">
+                <a href="#profile-hero" class="px-4 py-1.5 text-xs font-semibold text-zinc-300 hover:text-white hover:bg-lightBlack rounded-xl transition-all">프로필</a>
+                <a href="#about" class="px-4 py-1.5 text-xs font-semibold text-zinc-300 hover:text-white hover:bg-lightBlack rounded-xl transition-all">소개</a>
+                <a href="#schedule" class="px-4 py-1.5 text-xs font-semibold text-zinc-300 hover:text-white hover:bg-lightBlack rounded-xl transition-all">작업 일정</a>
+                <a href="#portfolio" class="px-4 py-1.5 text-xs font-semibold text-zinc-300 hover:text-white hover:bg-lightBlack rounded-xl transition-all">포트폴리오</a>
+            </nav>
+
+            <div class="flex items-center gap-2">
+                <!-- Admin Lock Toggle Button -->
+                <button onclick="openAdminModal()" id="admin-toggle-btn" class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-cardBg hover:bg-lightBlack border border-cardBorder text-xs font-bold text-zinc-300 transition-all">
+                    <i id="admin-icon" class="fa-solid fa-lock text-crimson-500"></i>
+                    <span id="admin-btn-label">관리자</span>
+                </button>
+
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden w-9 h-9 rounded-xl bg-cardBg border border-cardBorder flex items-center justify-center text-zinc-300">
+                    <i class="fa-solid fa-bars text-sm"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden border-b border-cardBorder bg-cardBg px-4 py-3 space-y-2">
+            <a href="#profile-hero" onclick="toggleMobileMenu()" class="block px-3 py-2 text-xs font-medium text-zinc-300 hover:bg-lightBlack rounded-lg">프로필</a>
+            <a href="#about" onclick="toggleMobileMenu()" class="block px-3 py-2 text-xs font-medium text-zinc-300 hover:bg-lightBlack rounded-lg">소개</a>
+            <a href="#schedule" onclick="toggleMobileMenu()" class="block px-3 py-2 text-xs font-medium text-zinc-300 hover:bg-lightBlack rounded-lg">작업 일정</a>
+            <a href="#portfolio" onclick="toggleMobileMenu()" class="block px-3 py-2 text-xs font-medium text-zinc-300 hover:bg-lightBlack rounded-lg">포트폴리오</a>
+        </div>
+    </header>
+
+    <!-- Main Content Layout Container -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 space-y-10 flex-grow w-full">
+
+        <!-- HERO PROFILE HEADER SECTION -->
+        <section id="profile-hero" class="relative rounded-3xl bg-cardBg border border-cardBorder overflow-hidden shadow-2xl">
+            <!-- Top Ambient Glow Line -->
+            <div class="h-1.5 w-full bg-gradient-to-r from-crimson-900 via-crimson-600 to-crimson-950"></div>
+            
+            <!-- Cover / Backdrop Mesh & Custom Banner Upload -->
+            <div id="hero-banner-container" class="relative h-44 sm:h-56 bg-gradient-to-r from-zinc-950 via-crimson-950/40 to-zinc-950 flex items-center justify-center overflow-hidden bg-cover bg-center transition-all duration-300">
+                <div id="hero-banner-overlay" class="absolute inset-0 bg-black/40"></div>
+                <div class="absolute inset-0 bg-[radial-gradient(#9f1239_1px,transparent_1px)] [background-size:16px_16px] opacity-25"></div>
+                <div class="absolute -top-12 -right-12 w-64 h-64 bg-crimson-800/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-12 -left-12 w-64 h-64 bg-crimson-900/20 rounded-full blur-3xl pointer-events-none"></div>
+                <span id="hero-banner-title-text" class="relative z-10 text-zinc-800/40 font-black text-7xl sm:text-9xl select-none tracking-widest pointer-events-none">ON 3D</span>
+                
+                <!-- Admin Edit Banner Button -->
+                <button id="edit-banner-btn" onclick="openBannerUploadModal()" class="hidden absolute top-4 right-4 z-20 px-3 py-1.5 rounded-xl bg-black/70 hover:bg-crimson-900 text-white text-xs font-bold border border-crimson-700/60 backdrop-blur-md transition-all">
+                    <i class="fa-solid fa-camera mr-1.5"></i>배경 커버/GIF 변경
+                </button>
+            </div>
+
+            <!-- Profile Info Content Area -->
+            <div class="px-6 sm:px-10 pb-8 pt-0 relative flex flex-col sm:flex-row items-center sm:items-end gap-6 sm:gap-8 -mt-16 sm:-mt-20">
+                <!-- Circular Avatar Display with Image/GIF & Transparency Support -->
+                <div class="relative flex-shrink-0 group">
+                    <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-lightBlack p-1.5 border-2 border-crimson-800/80 shadow-2xl crimson-glow-sm relative z-10 overflow-hidden png-checkerboard">
+                        <div id="hero-avatar-wrapper" class="w-full h-full rounded-full flex items-center justify-center overflow-hidden relative">
+                            <!-- Circular Avatar Image Container -->
+                            <img id="hero-avatar-img" src="" class="hidden w-full h-full object-cover rounded-full drop-shadow" alt="ON 3D Avatar">
+                            <div id="hero-avatar-placeholder" class="flex flex-col items-center justify-center text-center p-2">
+                                <i class="fa-solid fa-cube text-4xl sm:text-5xl text-crimson-500 mb-1"></i>
+                                <span class="text-[11px] font-bold text-zinc-300">3D CREATOR</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Admin Edit Profile Avatar Button -->
+                    <button id="edit-avatar-btn" onclick="openAvatarUploadModal()" class="hidden absolute bottom-1 right-1 z-30 w-9 h-9 rounded-full bg-crimson-800 hover:bg-crimson-700 text-white flex items-center justify-center shadow-lg border border-white/20 transition-all">
+                        <i class="fa-solid fa-pen text-xs"></i>
+                    </button>
+
+                    <span class="absolute -bottom-2 left-1/2 -translate-x-1/2 sm:left-auto sm:right-2 sm:translate-x-0 z-20 px-2.5 py-0.5 rounded-full bg-crimson-800 text-white text-[10px] font-black border border-crimson-500 shadow">
+                        ONLINE
+                    </span>
+                </div>
+
+                <!-- Bio & Title Header -->
+                <div class="flex-grow text-center sm:text-left space-y-3">
+                    <div class="space-y-1">
+                        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                            <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight flex items-baseline gap-2">
+                                ON <span class="text-xs font-normal text-crimson-400 bg-crimson-950/80 border border-crimson-800/60 px-2.5 py-0.5 rounded-full">3D Vtuber Specialist</span>
+                            </h1>
+                        </div>
+                        <p class="text-xs sm:text-sm text-zinc-400 font-medium">
+                            3D 아바타 제작, 멜리고(Meligo), 와루도(Warudo), 닐로툰(NiloToon) 셰이더 세팅 전문 작가
+                        </p>
+                    </div>
+
+                    <!-- Top Profile Tags -->
+                    <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1">
+                        <span class="px-3 py-1 rounded-xl bg-lightBlack border border-crimson-900/60 text-crimson-300 text-xs font-bold flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-box text-crimson-500 text-[10px]"></i> 3D Avatar
+                        </span>
+                        <span class="px-3 py-1 rounded-xl bg-lightBlack border border-crimson-900/60 text-crimson-300 text-xs font-bold flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-vr-cardboard text-crimson-500 text-[10px]"></i> Meligo
+                        </span>
+                        <span class="px-3 py-1 rounded-xl bg-lightBlack border border-crimson-900/60 text-crimson-300 text-xs font-bold flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-wand-magic-sparkles text-crimson-500 text-[10px]"></i> Warudo
+                        </span>
+                        <span class="px-3 py-1 rounded-xl bg-lightBlack border border-crimson-900/60 text-crimson-300 text-xs font-bold flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-palette text-crimson-500 text-[10px]"></i> NiloToon
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Quick Action Contact Cards -->
+                <div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto flex-shrink-0 pt-2 sm:pt-0">
+                    <!-- Discord Quick Copy -->
+                    <button onclick="copyDiscordTag()" class="w-full sm:w-auto flex items-center justify-center gap-2.5 px-4 py-2.5 rounded-xl bg-lightBlack hover:bg-zinc-800 border border-cardBorder text-zinc-200 text-xs font-bold transition-all group">
+                        <i class="fa-brands fa-discord text-base text-[#5865F2] group-hover:scale-110 transition-transform"></i>
+                        <span class="font-mono text-zinc-300">on_n_on</span>
+                        <i class="fa-regular fa-copy text-zinc-500 group-hover:text-white transition-colors"></i>
+                    </button>
+
+                    <!-- Artmug Button -->
+                    <a href="https://artmug.kr/index.php?channel=view&uid=45284" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-crimson-900/80 hover:bg-crimson-800 text-white text-xs font-bold border border-crimson-700/60 transition-all shadow-md">
+                        <i class="fa-solid fa-palette"></i>
+                        <span>아트머그 프로필</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT & SERVICES SECTION -->
+        <section id="about" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Bio Intro Box -->
+            <div class="lg:col-span-2 bg-cardBg rounded-3xl border border-cardBorder p-6 sm:p-8 relative overflow-hidden flex flex-col justify-between space-y-6">
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between border-b border-cardBorder/80 pb-4">
+                        <h3 class="text-lg font-extrabold text-white flex items-center gap-2.5">
+                            <i class="fa-solid fa-user-gear text-crimson-500"></i>
+                            <span>ON 작가 소개</span>
+                        </h3>
+                        <button id="edit-about-btn" onclick="openEditAboutModal()" class="hidden text-xs font-bold text-crimson-400 hover:text-crimson-300 bg-lightBlack px-3 py-1.5 rounded-xl border border-cardBorder transition-colors">
+                            <i class="fa-solid fa-pen-to-square mr-1"></i> 수정
+                        </button>
+                    </div>
+
+                    <div id="about-content" class="space-y-3">
+                        <p id="intro-headline" class="text-sm font-bold text-zinc-200 leading-relaxed"></p>
+                        <div id="intro-body-text" class="text-xs text-zinc-400 space-y-2 leading-relaxed"></div>
+                    </div>
+                </div>
+
+                <!-- Key Strengths Tags -->
+                <div class="pt-4 border-t border-cardBorder/80 grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    <div class="p-3 rounded-2xl bg-lightBlack border border-cardBorder/60 text-center">
+                        <span class="block text-[11px] text-zinc-400 font-semibold mb-1">최적화 프로그램</span>
+                        <span class="text-xs font-bold text-crimson-400">Warudo & Meligo</span>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-lightBlack border border-cardBorder/60 text-center">
+                        <span class="block text-[11px] text-zinc-400 font-semibold mb-1">셰이더 표현</span>
+                        <span class="text-xs font-bold text-crimson-400">NiloToon & MToon</span>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-lightBlack border border-cardBorder/60 text-center col-span-2 sm:col-span-1">
+                        <span class="block text-[11px] text-zinc-400 font-semibold mb-1">지원 포맷</span>
+                        <span class="text-xs font-bold text-crimson-400">VRM / FBX / Unity</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Process & Services Card -->
+            <div class="bg-cardBg rounded-3xl border border-cardBorder p-6 sm:p-8 flex flex-col justify-between space-y-6 hover-lift">
+                <div class="space-y-4">
+                    <h4 class="text-base font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-crimson-500"></i>
+                        <span>주요 작업 분야</span>
+                    </h4>
+                    
+                    <ul class="space-y-3 text-xs text-zinc-300 font-medium">
+                        <li class="flex items-start gap-2.5 p-2.5 rounded-xl bg-lightBlack/80 border border-cardBorder/60">
+                            <i class="fa-solid fa-check text-crimson-500 mt-0.5"></i>
+                            <span>3D 캐릭터 모델링 및 의상/헤어 세팅</span>
+                        </li>
+                        <li class="flex items-start gap-2.5 p-2.5 rounded-xl bg-lightBlack/80 border border-cardBorder/60">
+                            <i class="fa-solid fa-check text-crimson-500 mt-0.5"></i>
+                            <span>NiloToon 툰셰이더 룩뎁 연출 및 재질 세팅</span>
+                        </li>
+                        <li class="flex items-start gap-2.5 p-2.5 rounded-xl bg-lightBlack/80 border border-cardBorder/60">
+                            <i class="fa-solid fa-check text-crimson-500 mt-0.5"></i>
+                            <span>Meligo / Warudo 전용 아바타 셋업 및 오버레이</span>
+                        </li>
+                        <li class="flex items-start gap-2.5 p-2.5 rounded-xl bg-lightBlack/80 border border-cardBorder/60">
+                            <i class="fa-solid fa-check text-crimson-500 mt-0.5"></i>
+                            <span>표정 블렌드셰입 & 물리 세팅</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Direct Commission Banner Button -->
+                <a href="https://artmug.kr/index.php?channel=view&uid=45284" target="_blank" rel="noopener noreferrer" class="group flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-crimson-900 via-crimson-800 to-crimson-950 border border-crimson-700/60 hover:scale-[1.02] transition-transform">
+                    <div>
+                        <span class="block text-[10px] text-crimson-200 font-bold uppercase tracking-wider">Artmug Commission</span>
+                        <span class="text-xs font-bold text-white">아트머그 상세 안내 & 신청</span>
+                    </div>
+                    <i class="fa-solid fa-circle-arrow-right text-lg text-white group-hover:translate-x-1 transition-transform"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- SCHEDULE & SLOT STATUS SECTION -->
+        <section id="schedule" class="bg-cardBg rounded-3xl border border-cardBorder p-6 sm:p-8 space-y-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-cardBorder/80 pb-4">
+                <div>
+                    <h3 class="text-lg font-extrabold text-white flex items-center gap-2.5">
+                        <i class="fa-solid fa-calendar-check text-crimson-500"></i>
+                        <span>외주 및 커미션 작업 일정</span>
+                    </h3>
+                    <p class="text-xs text-zinc-400 mt-1">실시간 작업 상태 및 예약 가능 슬롯을 확인하세요.</p>
+                </div>
+
+                <button id="edit-schedule-btn" onclick="openAddScheduleModal()" class="hidden px-3.5 py-2 rounded-xl bg-crimson-800 hover:bg-crimson-700 text-white text-xs font-bold transition-all shadow-md">
+                    <i class="fa-solid fa-plus mr-1"></i> 일정 슬롯 추가
+                </button>
+            </div>
+
+            <!-- Schedule Slot Cards Grid -->
+            <div id="schedule-list-container" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Dynamically rendered via JS -->
+            </div>
+        </section>
+
+        <!-- PORTFOLIO SECTION -->
+        <section id="portfolio" class="space-y-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-cardBorder/80 pb-4">
+                <div>
+                    <h3 class="text-xl font-black text-white flex items-center gap-2.5">
+                        <i class="fa-solid fa-images text-crimson-500"></i>
+                        <span>포트폴리오 갤러리</span>
+                    </h3>
+                    <p class="text-xs text-zinc-400 mt-1">3D 아바타, 툰셰이더 및 버추얼 프로그램 세팅 결과물 (깔끔한 다크 배경 적용)</p>
+                </div>
+
+                <!-- Admin Add Portfolio Button -->
+                <button id="add-portfolio-btn" onclick="openAddPortfolioModal()" class="hidden px-4 py-2 rounded-xl bg-crimson-800 hover:bg-crimson-700 text-white text-xs font-bold transition-all shadow-md">
+                    <i class="fa-solid fa-plus mr-1"></i> 새 작품 등록
+                </button>
+            </div>
+
+            <!-- Category Filter Tabs & Settings -->
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <div class="flex flex-wrap items-center gap-2" id="portfolio-category-filters">
+                    <button onclick="filterPortfolio('all')" class="port-filter-btn active px-3.5 py-1.5 rounded-xl bg-crimson-800 text-white text-xs font-bold transition-all" data-cat="all">전체보기</button>
+                    <button onclick="filterPortfolio('3D Avatar')" class="port-filter-btn px-3.5 py-1.5 rounded-xl bg-lightBlack hover:bg-zinc-800 text-zinc-300 text-xs font-semibold border border-cardBorder transition-all" data-cat="3D Avatar">3D Avatar</button>
+                    <button onclick="filterPortfolio('NiloToon')" class="port-filter-btn px-3.5 py-1.5 rounded-xl bg-lightBlack hover:bg-zinc-800 text-zinc-300 text-xs font-semibold border border-cardBorder transition-all" data-cat="NiloToon">NiloToon</button>
+                    <button onclick="filterPortfolio('Meligo/Warudo')" class="port-filter-btn px-3.5 py-1.5 rounded-xl bg-lightBlack hover:bg-zinc-800 text-zinc-300 text-xs font-semibold border border-cardBorder transition-all" data-cat="Meligo/Warudo">Meligo / Warudo</button>
+                </div>
+            </div>
+
+            <!-- Portfolio Grid Display -->
+            <div id="portfolio-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- JS Dynamic Render -->
+            </div>
+
+            <div id="portfolio-empty-msg" class="hidden text-center py-16 bg-cardBg rounded-3xl border border-cardBorder space-y-2">
+                <i class="fa-regular fa-folder-open text-4xl text-zinc-600"></i>
+                <p class="text-xs font-bold text-zinc-400">해당 카테고리에 등록된 작품이 없습니다.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="w-full bg-cardBg border-t border-cardBorder py-8 mt-12">
+        <div class="max-w-6xl mx-auto px-4 text-center space-y-3">
+            <div class="flex items-center justify-center gap-2 text-white font-bold text-sm">
+                <i class="fa-solid fa-cube text-crimson-500"></i>
+                <span>ON 3D Portfolio</span>
+            </div>
+            <p class="text-xs text-zinc-500">
+                © 2026 ON 3D. All rights reserved. 본 포트폴리오의 모든 3D 모델링 및 이미지 저작권은 ON 작가에게 있습니다.
+            </p>
+        </div>
+    </footer>
+
+    <!-- MODAL 1: Firebase Email/Password Admin Login Modal -->
+    <div id="admin-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
+        <div class="bg-cardBg rounded-3xl border border-crimson-800/80 p-6 sm:p-8 max-w-sm w-11/12 shadow-2xl crimson-glow transform scale-95 transition-transform duration-300">
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-xl bg-crimson-900 flex items-center justify-center text-white text-xs">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">관리자 인증</h3>
+                </div>
+                <button onclick="closeAdminModal()" class="text-zinc-500 hover:text-white">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <p class="text-xs text-zinc-400 mb-4">Firebase 관리자 계정이 없더라도 비밀번호 <code class="text-crimson-400 font-mono">admin</code>으로 편집 모드가 활성화됩니다.</p>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-zinc-300 mb-1.5">이메일 계정 (선택)</label>
+                    <input type="email" id="admin-email-input" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600 font-sans" placeholder="admin@example.com">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-zinc-300 mb-1.5">비밀번호</label>
+                    <input type="password" id="admin-password-input" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600 font-sans" placeholder="••••••••">
+                </div>
+
+                <div id="admin-error-msg" class="hidden text-xs text-rose-500 font-bold text-center">
+                    로그인에 실패했습니다. 비밀번호를 확인해주세요.
+                </div>
+
+                <button id="admin-login-submit-btn" onclick="verifyAdminPassword()" class="w-full py-3 rounded-xl bg-crimson-800 hover:bg-crimson-700 text-white font-bold text-xs transition-all shadow-lg shadow-crimson-950/80 flex items-center justify-center gap-2">
+                    <span>인증 및 관리 모드 활성화</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: Edit About Info Modal -->
+    <div id="edit-about-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
+        <div class="bg-cardBg rounded-3xl border border-cardBorder p-6 sm:p-8 max-w-lg w-11/12 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b border-cardBorder pb-3">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-crimson-500"></i> 작가 소개 문구 수정
+                </h3>
+                <button onclick="closeEditAboutModal()" class="text-zinc-500 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-zinc-300 mb-1">메인 헤드라인</label>
+                    <input type="text" id="input-headline" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-zinc-300 mb-1">상세 소개 본문 (줄바꿈 구분)</label>
+                    <textarea id="input-body" rows="6" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600 leading-relaxed"></textarea>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="closeEditAboutModal()" class="px-4 py-2 rounded-xl bg-lightBlack text-zinc-400 text-xs font-bold">취소</button>
+                <button onclick="saveAboutInfo()" class="px-5 py-2 rounded-xl bg-crimson-800 hover:bg-crimson-700 text-white text-xs font-bold">저장하기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: Add Schedule Slot Modal -->
+    <div id="schedule-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
+        <div class="bg-cardBg rounded-3xl border border-cardBorder p-6 sm:p-8 max-w-md w-11/12 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b border-cardBorder pb-3">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-calendar-plus text-crimson-500"></i> 작업 일정 추가
+                </h3>
+                <button onclick="closeAddScheduleModal()" class="text-zinc-500 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-zinc-300 mb-1">슬롯 제목</label>
+                    <input type="text" id="sch-title" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600" placeholder="예: 9월 1차 슬롯">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-zinc-300 mb-1">작업 상태</label>
+                    <select id="sch-status" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600">
+                        <option value="예약가능">예약가능</option>
+                        <option value="작업중">작업중</option>
+                        <option value="마감">마감</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-zinc-300 mb-1">작업 기간 / 날짜</label>
+                    <input type="text" id="sch-date" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600" placeholder="예: 2026.09.01 ~ 09.15">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-zinc-300 mb-1">설명</label>
+                    <input type="text" id="sch-desc" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600" placeholder="작업 상세 조건">
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="closeAddScheduleModal()" class="px-4 py-2 rounded-xl bg-lightBlack text-zinc-400 text-xs font-bold">취소</button>
+                <button onclick="saveScheduleItem()" class="px-5 py-2 rounded-xl bg-crimson-800 hover:bg-crimson-700 text-white text-xs font-bold">추가하기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 4: Add Portfolio Item Modal -->
+    <div id="portfolio-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
+        <div class="bg-cardBg rounded-3xl border border-cardBorder p-6 sm:p-8 max-w-lg w-11/12 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-cardBorder pb-3">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-plus-circle text-crimson-500"></i> 새 포트폴리오 작품 등록
+                </h3>
+                <button onclick="closeAddPortfolioModal()" class="text-zinc-500 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-zinc-300 mb-1">작품 제목</label>
+                    <input type="text" id="port-title" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600" placeholder="작품 이름">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-zinc-300 mb-1">카테고리</label>
+                    <select id="port-category" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600">
+                        <option value="3D Avatar">3D Avatar</option>
+                        <option value="NiloToon">NiloToon</option>
+                        <option value="Meligo/Warudo">Meligo / Warudo</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-zinc-300 mb-1">이미지 업로드 또는 URL (투명 PNG 지원)</label>
+                    <input type="file" id="port-file-input" accept="image/*" onchange="handleImageFileUpload(event)" class="hidden">
+                    <label for="port-file-input" class="flex flex-col items-center justify-center p-4 border-2 border-dashed border-cardBorder hover:border-crimson-700 bg-lightBlack rounded-2xl cursor-pointer transition-colors group">
+                        <i class="fa-solid fa-cloud-arrow-up text-2xl text-zinc-500 group-hover:text-crimson-500 mb-1"></i>
+                        <span class="text-xs font-bold text-zinc-300">내 PC에서 이미지 파일 선택</span>
+                    </label>
+                    
+                    <div class="text-center text-[10px] text-zinc-500 my-1 font-bold">또는 URL 직접 입력</div>
+                    <input type="text" id="port-image-url" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600" placeholder="https://domain.com/image.png">
+
+                    <div id="upload-preview-container" class="hidden mt-2 flex justify-center bg-lightBlack p-2 rounded-2xl border border-cardBorder png-checkerboard">
+                        <img id="upload-preview-img" class="max-h-32 rounded-lg object-contain" src="" alt="Preview">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-zinc-300 mb-1">해시태그 (쉼표로 구분)</label>
+                    <input type="text" id="port-tags" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600" placeholder="3D Avatar, NiloToon, Warudo">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-zinc-300 mb-1">상세 설명</label>
+                    <textarea id="port-desc" rows="3" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600" placeholder="작업 내용 및 특이사항"></textarea>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="closeAddPortfolioModal()" class="px-4 py-2 rounded-xl bg-lightBlack text-zinc-400 text-xs font-bold">취소</button>
+                <button onclick="savePortfolioItem()" class="px-5 py-2 rounded-xl bg-crimson-800 hover:bg-crimson-700 text-white text-xs font-bold">등록하기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 5: Custom Profile Avatar Image/GIF Upload Modal -->
+    <div id="avatar-upload-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
+        <div class="bg-cardBg rounded-3xl border border-cardBorder p-6 sm:p-8 max-w-md w-11/12 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b border-cardBorder pb-3">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-user-gear text-crimson-500"></i> 원형 프로필 사진/GIF 변경
+                </h3>
+                <button onclick="closeAvatarUploadModal()" class="text-zinc-500 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div class="space-y-3">
+                <label class="block text-xs font-bold text-zinc-300">이미지 / GIF 파일 선택 또는 URL 입력</label>
+                <input type="file" id="avatar-file-input" accept="image/*,image/gif" onchange="handleAvatarFileSelect(event)" class="hidden">
+                <label for="avatar-file-input" class="flex flex-col items-center justify-center p-6 border-2 border-dashed border-cardBorder hover:border-crimson-700 bg-lightBlack rounded-2xl cursor-pointer transition-colors group">
+                    <i class="fa-solid fa-image text-3xl text-zinc-500 group-hover:text-crimson-500 mb-2 transition-colors"></i>
+                    <span class="text-xs font-bold text-zinc-300">내 PC에서 이미지/GIF 선택</span>
+                    <span class="text-[10px] text-zinc-500 mt-0.5">GIF 애니메이션 및 투명 PNG 지원</span>
+                </label>
+
+                <div class="text-center text-[10px] text-zinc-500 font-bold uppercase">또는 이미지 URL</div>
+                <input type="text" id="avatar-url-input" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600" placeholder="https://domain.com/avatar.gif">
+
+                <!-- Avatar Preview -->
+                <div id="avatar-preview-box" class="hidden flex items-center justify-center p-3 bg-lightBlack rounded-2xl border border-cardBorder png-checkerboard">
+                    <img id="avatar-preview-img" src="" class="w-24 h-24 rounded-full object-cover border-2 border-crimson-600 shadow-md" alt="Avatar Preview">
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="closeAvatarUploadModal()" class="px-4 py-2 rounded-xl bg-lightBlack text-zinc-400 text-xs font-bold">취소</button>
+                <button onclick="saveAvatarImage()" class="px-5 py-2 rounded-xl bg-crimson-800 hover:bg-crimson-700 text-white text-xs font-bold">프로필 변경 완료</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 6: Custom Hero Banner Image/GIF Upload Modal -->
+    <div id="banner-upload-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
+        <div class="bg-cardBg rounded-3xl border border-cardBorder p-6 sm:p-8 max-w-md w-11/12 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b border-cardBorder pb-3">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-panorama text-crimson-500"></i> 배너 커버 이미지/GIF 변경
+                </h3>
+                <button onclick="closeBannerUploadModal()" class="text-zinc-500 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div class="space-y-3">
+                <label class="block text-xs font-bold text-zinc-300">배너 파일 선택 또는 URL 입력</label>
+                <input type="file" id="banner-file-input" accept="image/*,image/gif" onchange="handleBannerFileSelect(event)" class="hidden">
+                <label for="banner-file-input" class="flex flex-col items-center justify-center p-6 border-2 border-dashed border-cardBorder hover:border-crimson-700 bg-lightBlack rounded-2xl cursor-pointer transition-colors group">
+                    <i class="fa-solid fa-cloud-arrow-up text-3xl text-zinc-500 group-hover:text-crimson-500 mb-2 transition-colors"></i>
+                    <span class="text-xs font-bold text-zinc-300">내 PC에서 커버/GIF 선택</span>
+                    <span class="text-[10px] text-zinc-500 mt-0.5">움직이는 GIF 및 이미지 지원</span>
+                </label>
+
+                <div class="text-center text-[10px] text-zinc-500 font-bold uppercase">또는 이미지 URL</div>
+                <input type="text" id="banner-url-input" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600" placeholder="https://domain.com/banner.gif">
+
+                <!-- Banner Preview -->
+                <div id="banner-preview-box" class="hidden h-28 w-full bg-lightBlack rounded-2xl border border-cardBorder overflow-hidden">
+                    <img id="banner-preview-img" src="" class="w-full h-full object-cover" alt="Banner Preview">
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="closeBannerUploadModal()" class="px-4 py-2 rounded-xl bg-lightBlack text-zinc-400 text-xs font-bold">취소</button>
+                <button onclick="saveBannerImage()" class="px-5 py-2 rounded-xl bg-crimson-800 hover:bg-crimson-700 text-white text-xs font-bold">배너 변경 완료</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 7: Image Lightbox Modal with Automatic Transparent Background Checkerboard -->
+    <div id="image-viewer-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-lg opacity-0 pointer-events-none transition-all duration-300 p-4" onclick="closeImageViewer()">
+        <div class="relative max-w-4xl w-full flex flex-col items-center space-y-4" onclick="event.stopPropagation()">
+            <div class="flex items-center justify-between w-full text-white">
+                <div>
+                    <h3 id="viewer-title" class="text-base font-bold"></h3>
+                    <p id="viewer-caption" class="text-xs text-zinc-400"></p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="closeImageViewer()" class="w-8 h-8 rounded-full bg-lightBlack flex items-center justify-center text-zinc-400 hover:text-white border border-cardBorder">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Frame automatically formatted with png-checkerboard for transparent assets -->
+            <div id="viewer-frame" class="relative max-h-[75vh] w-full flex items-center justify-center rounded-2xl overflow-hidden border border-cardBorder png-checkerboard p-4">
+                <img id="viewer-img" src="" class="max-h-[70vh] max-w-full object-contain drop-shadow-2xl" alt="Enlarged View">
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global Firebase Setup
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'on-3d-portfolio';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' 
+            ? JSON.parse(__firebase_config) 
+            : {
+                apiKey: "AIzaSyDummyKeyForInitializationOnly",
+                authDomain: "on-3d-portfolio.firebaseapp.com",
+                projectId: "on-3d-portfolio",
+                storageBucket: "on-3d-portfolio.appspot.com",
+                messagingSenderId: "123456789012",
+                appId: "1:123456789012:web:abcdef123456"
+            };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Firestore Public Doc Reference
+        const siteDocRef = doc(db, 'artifacts', appId, 'public', 'siteContent');
+
+        // Default Data State
+        const DEFAULT_ABOUT = {
+            headline: "안녕하세요, 3D 버추얼 아바타 제작 & 툰셰이더 셋업을 전문으로 하는 ON 입니다.",
+            body: `시청자와의 몰입감 넘치는 소통을 위한 최적의 3D 아바타 제작을 진행합니다.\nMeligo, Warudo, NiloToon 셰이더 및 다양한 트래킹 프로그램 최적화 경험을 바탕으로 개성 있고 매력적인 3D 버추얼 캐릭터를 완성해 드립니다.\n의상 및 헤어 세팅, 표정 모프(Morph), 툰셰이더 감성 연출, 물리 연동(PhysBone/Physics)까지 자연스럽고 완성도 높은 결과물을 보장합니다.`
+        };
+
+        const DEFAULT_SCHEDULE = [
+            {
+                id: 1,
+                title: "8월 1차 슬롯 (3D 풀셋업)",
+                status: "마감",
+                date: "2026.08.01 ~ 08.15",
+                desc: "3D 아바타 모델링 & NiloToon 셰이더 적용 완결"
+            },
+            {
+                id: 2,
+                title: "8월 2차 슬롯 (Warudo/Meligo 셋업)",
+                status: "작업중",
+                date: "2026.08.16 ~ 08.28",
+                desc: "의상 셋업 및 오버레이 물리 연동 작업 진행 중"
+            },
+            {
+                id: 3,
+                title: "9월 1차 예약 슬롯",
+                status: "예약가능",
+                date: "2026.09.01 오픈 예정",
+                desc: "아트머그를 통해 예약 문의 가능합니다."
+            }
+        ];
+
+        const DEFAULT_PORTFOLIO = [
+            {
+                id: 101,
+                title: "NiloToon 툰셰이더 3D 버추얼 아바타",
+                category: "NiloToon",
+                tags: ["3D Avatar", "NiloToon", "Warudo"],
+                desc: "투명 배경 PNG 포맷 3D 캐릭터 아바타. NiloToon 셰이더로 선명하고 감성적인 애니메이션 룩 표현.",
+                image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 102,
+                title: "Warudo / Meligo 오버레이 의상 세팅",
+                category: "Meligo/Warudo",
+                tags: ["Meligo", "Warudo", "PhysBone"],
+                desc: "실시간 트래킹 최적화 및 의상 물리 세팅 적용 완료 모델.",
+                image: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 103,
+                title: "3D Full Character Model (Meligo & Unity)",
+                category: "3D Avatar",
+                tags: ["3D Avatar", "Unity", "Meligo"],
+                desc: "헤어, 표정 블렌드셰입 및 바디 3D 자작 렌더링 프로젝트.",
+                image: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=800&q=80"
+            }
+        ];
+
+        // Global State Variable
+        window.state = {
+            about: DEFAULT_ABOUT,
+            schedule: DEFAULT_SCHEDULE,
+            portfolio: DEFAULT_PORTFOLIO,
+            avatarImg: "",
+            bannerImg: ""
+        };
+
+        window.isAdmin = false;
+        window.activeFilter = 'all';
+        window.uploadedPortImage = "";
+        window.uploadedAvatarImage = "";
+        window.uploadedBannerImage = "";
+
+        // Toast Notification Display
+        window.showToast = function(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            if (toastMsg) toastMsg.innerText = msg;
+            if (toast) {
+                toast.classList.remove('translate-y-20', 'opacity-0');
+                toast.classList.add('translate-y-0', 'opacity-100');
+
+                setTimeout(() => {
+                    toast.classList.remove('translate-y-0', 'opacity-100');
+                    toast.classList.add('translate-y-20', 'opacity-0');
+                }, 3000);
+            }
+        };
+
+        // Firebase Auth Listener
+        onAuthStateChanged(auth, (user) => {
+            if (user && !user.isAnonymous) {
+                window.isAdmin = true;
+                window.showToast("🔑 관리자로 계정 인증되었습니다.");
+            }
+            updateAdminUI();
+        });
+
+        // Initialize Data Sync
+        function initDataSync() {
+            onSnapshot(siteDocRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.data();
+                    if (data.about) window.state.about = data.about;
+                    if (data.schedule) window.state.schedule = data.schedule;
+                    if (data.portfolio) window.state.portfolio = data.portfolio;
+                    if (data.avatarImg !== undefined) window.state.avatarImg = data.avatarImg;
+                    if (data.bannerImg !== undefined) window.state.bannerImg = data.bannerImg;
+                }
+                renderAll();
+            }, (error) => {
+                console.warn("Firestore Sync Fallback to Local Storage:", error);
+                loadLocalData();
+                renderAll();
+            });
+        }
+
+        function loadLocalData() {
+            const savedAbout = localStorage.getItem("ON_ABOUT");
+            const savedSch = localStorage.getItem("ON_SCHEDULE");
+            const savedPort = localStorage.getItem("ON_PORTFOLIO");
+            const savedAvatar = localStorage.getItem("ON_AVATAR");
+            const savedBanner = localStorage.getItem("ON_BANNER");
+
+            if (savedAbout) window.state.about = JSON.parse(savedAbout);
+            if (savedSch) window.state.schedule = JSON.parse(savedSch);
+            if (savedPort) window.state.portfolio = JSON.parse(savedPort);
+            if (savedAvatar) window.state.avatarImg = savedAvatar;
+            if (savedBanner) window.state.bannerImg = savedBanner;
+        }
+
+        window.syncStateToStore = async function() {
+            localStorage.setItem("ON_ABOUT", JSON.stringify(window.state.about));
+            localStorage.setItem("ON_SCHEDULE", JSON.stringify(window.state.schedule));
+            localStorage.setItem("ON_PORTFOLIO", JSON.stringify(window.state.portfolio));
+            localStorage.setItem("ON_AVATAR", window.state.avatarImg || "");
+            localStorage.setItem("ON_BANNER", window.state.bannerImg || "");
+
+            try {
+                await setDoc(siteDocRef, {
+                    about: window.state.about,
+                    schedule: window.state.schedule,
+                    portfolio: window.state.portfolio,
+                    avatarImg: window.state.avatarImg || "",
+                    bannerImg: window.state.bannerImg || "",
+                    updatedAt: new Date().toISOString()
+                }, { merge: true });
+            } catch (err) {
+                console.log("Saved to LocalStorage (Firestore sync bypass):", err);
+            }
+        };
+
+        // Render All Sections
+        window.renderAll = function() {
+            renderAbout();
+            renderSchedule();
+            renderPortfolio();
+            renderHeaderImages();
+            updateAdminUI();
+        };
+
+        function renderHeaderImages() {
+            // Banner Background
+            const bannerContainer = document.getElementById('hero-banner-container');
+            const bannerTitleText = document.getElementById('hero-banner-title-text');
+            if (bannerContainer) {
+                if (window.state.bannerImg) {
+                    bannerContainer.style.backgroundImage = `url('${window.state.bannerImg}')`;
+                    if (bannerTitleText) bannerTitleText.classList.add('opacity-10');
+                } else {
+                    bannerContainer.style.backgroundImage = '';
+                    if (bannerTitleText) bannerTitleText.classList.remove('opacity-10');
+                }
+            }
+
+            // Avatar Image
+            const avatarImg = document.getElementById('hero-avatar-img');
+            const avatarPlaceholder = document.getElementById('hero-avatar-placeholder');
+            if (avatarImg && avatarPlaceholder) {
+                if (window.state.avatarImg) {
+                    avatarImg.src = window.state.avatarImg;
+                    avatarImg.classList.remove('hidden');
+                    avatarPlaceholder.classList.add('hidden');
+                } else {
+                    avatarImg.classList.add('hidden');
+                    avatarPlaceholder.classList.remove('hidden');
+                }
+            }
+        }
+
+        function renderAbout() {
+            const headlineEl = document.getElementById('intro-headline');
+            const bodyEl = document.getElementById('intro-body-text');
+            
+            if (headlineEl) headlineEl.innerText = window.state.about.headline || "";
+            if (bodyEl) {
+                const paragraphs = (window.state.about.body || "").split('\n');
+                bodyEl.innerHTML = paragraphs.map(p => `<p>${escapeHtml(p)}</p>`).join('');
+            }
+        }
+
+        function renderSchedule() {
+            const container = document.getElementById('schedule-list-container');
+            if (!container) return;
+
+            if (window.state.schedule.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-8 text-zinc-500 text-xs font-semibold">
+                        등록된 작업 일정이 없습니다.
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = window.state.schedule.map(item => {
+                let statusBadge = '';
+                if (item.status === '예약가능') {
+                    statusBadge = `<span class="px-2.5 py-1 rounded-lg bg-emerald-950/80 border border-emerald-700/80 text-emerald-400 text-[11px] font-bold"><i class="fa-solid fa-circle-check mr-1 text-[9px]"></i>예약가능</span>`;
+                } else if (item.status === '작업중') {
+                    statusBadge = `<span class="px-2.5 py-1 rounded-lg bg-amber-950/80 border border-amber-700/80 text-amber-400 text-[11px] font-bold"><i class="fa-solid fa-spinner animate-spin mr-1 text-[9px]"></i>작업중</span>`;
+                } else {
+                    statusBadge = `<span class="px-2.5 py-1 rounded-lg bg-zinc-900 border border-zinc-700 text-zinc-400 text-[11px] font-bold"><i class="fa-solid fa-lock mr-1 text-[9px]"></i>마감</span>`;
+                }
+
+                return `
+                    <div class="p-5 rounded-2xl bg-lightBlack border border-cardBorder hover:border-crimson-800/60 transition-all flex flex-col justify-between space-y-3 relative group">
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between gap-2">
+                                <h4 class="text-xs font-bold text-white tracking-wide">${escapeHtml(item.title)}</h4>
+                                ${statusBadge}
+                            </div>
+                            <p class="text-[11px] text-crimson-400 font-mono font-medium">${escapeHtml(item.date)}</p>
+                            <p class="text-xs text-zinc-400 leading-relaxed">${escapeHtml(item.desc)}</p>
+                        </div>
+
+                        ${window.isAdmin ? `
+                            <div class="pt-2 border-t border-cardBorder/60 flex justify-end">
+                                <button onclick="deleteScheduleItem(${item.id})" class="text-[11px] font-bold text-rose-400 hover:text-rose-300">
+                                    <i class="fa-solid fa-trash mr-1"></i> 삭제
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderPortfolio() {
+            const grid = document.getElementById('portfolio-grid');
+            const emptyMsg = document.getElementById('portfolio-empty-msg');
+            if (!grid) return;
+
+            const filtered = window.state.portfolio.filter(item => {
+                if (window.activeFilter === 'all') return true;
+                return item.category === window.activeFilter;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                if (emptyMsg) emptyMsg.classList.remove('hidden');
+                return;
+            }
+
+            if (emptyMsg) emptyMsg.classList.add('hidden');
+
+            grid.innerHTML = filtered.map(item => {
+                const tagsList = (item.tags || []).map(t => 
+                    `<span class="px-2 py-0.5 rounded-md bg-zinc-900 text-zinc-400 text-[10px] font-mono border border-cardBorder">#${escapeHtml(t.trim())}</span>`
+                ).join(' ');
+
+                return `
+                    <div class="rounded-3xl bg-cardBg border border-cardBorder overflow-hidden flex flex-col justify-between hover-lift group">
+                        <div class="space-y-3">
+                            <!-- Image container automatically applies png-checkerboard for transparent assets -->
+                            <div class="relative h-56 w-full png-checkerboard overflow-hidden cursor-pointer" onclick="openImageViewer('${escapeHtml(item.image)}', '${escapeHtml(item.title)}', '${escapeHtml(item.desc)}')">
+                                <img src="${escapeHtml(item.image)}" class="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300" alt="${escapeHtml(item.title)}" onerror="this.src='https://placehold.co/800x600/18181b/ffffff?text=Image+Not+Found'">
+                                <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                    <span class="px-3 py-1.5 rounded-xl bg-black/80 text-white text-xs font-bold border border-white/20 backdrop-blur-md">
+                                        <i class="fa-solid fa-expand mr-1.5"></i> 크게 보기
+                                    </span>
+                                </div>
+                                <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-crimson-950/90 border border-crimson-800/80 text-crimson-300 text-[10px] font-bold">
+                                    ${escapeHtml(item.category)}
+                                </span>
+                            </div>
+
+                            <div class="p-5 space-y-2">
+                                <h4 class="text-sm font-extrabold text-white group-hover:text-crimson-400 transition-colors">${escapeHtml(item.title)}</h4>
+                                <p class="text-xs text-zinc-400 line-clamp-2 leading-relaxed">${escapeHtml(item.desc)}</p>
+                                <div class="flex flex-wrap gap-1.5 pt-1">
+                                    ${tagsList}
+                                </div>
+                            </div>
+                        </div>
+
+                        ${window.isAdmin ? `
+                            <div class="p-4 pt-0 flex justify-end">
+                                <button onclick="deletePortfolioItem(${item.id})" class="px-3 py-1 rounded-xl bg-rose-950/80 hover:bg-rose-900 border border-rose-800/60 text-rose-300 text-xs font-bold transition-all">
+                                    <i class="fa-solid fa-trash mr-1"></i> 삭제
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        window.filterPortfolio = function(cat) {
+            window.activeFilter = cat;
+            document.querySelectorAll('.port-filter-btn').forEach(btn => {
+                if (btn.getAttribute('data-cat') === cat) {
+                    btn.className = "port-filter-btn active px-3.5 py-1.5 rounded-xl bg-crimson-800 text-white text-xs font-bold transition-all";
+                } else {
+                    btn.className = "port-filter-btn px-3.5 py-1.5 rounded-xl bg-lightBlack hover:bg-zinc-800 text-zinc-300 text-xs font-semibold border border-cardBorder transition-all";
+                }
+            });
+            renderPortfolio();
+        };
+
+        // Admin UI Toggle Controls
+        function updateAdminUI() {
+            const adminLabel = document.getElementById('admin-btn-label');
+            const adminIcon = document.getElementById('admin-icon');
+
+            const editAboutBtn = document.getElementById('edit-about-btn');
+            const editSchBtn = document.getElementById('edit-schedule-btn');
+            const addPortBtn = document.getElementById('add-portfolio-btn');
+            const editBannerBtn = document.getElementById('edit-banner-btn');
+            const editAvatarBtn = document.getElementById('edit-avatar-btn');
+
+            if (window.isAdmin) {
+                if (adminLabel) adminLabel.innerText = "관리자 (ON)";
+                if (adminIcon) adminIcon.className = "fa-solid fa-lock-open text-emerald-400";
+
+                if (editAboutBtn) editAboutBtn.classList.remove('hidden');
+                if (editSchBtn) editSchBtn.classList.remove('hidden');
+                if (addPortBtn) addPortBtn.classList.remove('hidden');
+                if (editBannerBtn) editBannerBtn.classList.remove('hidden');
+                if (editAvatarBtn) editAvatarBtn.classList.remove('hidden');
+            } else {
+                if (adminLabel) adminLabel.innerText = "관리자";
+                if (adminIcon) adminIcon.className = "fa-solid fa-lock text-crimson-500";
+
+                if (editAboutBtn) editAboutBtn.classList.add('hidden');
+                if (editSchBtn) editSchBtn.classList.add('hidden');
+                if (addPortBtn) addPortBtn.classList.add('hidden');
+                if (editBannerBtn) editBannerBtn.classList.add('hidden');
+                if (editAvatarBtn) editAvatarBtn.classList.add('hidden');
+            }
+        }
+
+        window.openAdminModal = function() {
+            if (window.isAdmin) {
+                signOut(auth).then(() => {
+                    window.isAdmin = false;
+                    updateAdminUI();
+                    renderSchedule();
+                    renderPortfolio();
+                    window.showToast("🔒 관리자 모드가 해제되었습니다.");
+                }).catch(() => {
+                    window.isAdmin = false;
+                    updateAdminUI();
+                    renderSchedule();
+                    renderPortfolio();
+                    window.showToast("🔒 관리자 모드가 해제되었습니다.");
+                });
+                return;
+            }
+
+            const modal = document.getElementById('admin-modal');
+            const errorMsg = document.getElementById('admin-error-msg');
+            if (errorMsg) errorMsg.classList.add('hidden');
+            if (modal) {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modal.querySelector('div').classList.remove('scale-95');
+                modal.querySelector('div').classList.add('scale-100');
+            }
+        };
+
+        window.closeAdminModal = function() {
+            const modal = document.getElementById('admin-modal');
+            if (modal) {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                modal.querySelector('div').classList.remove('scale-100');
+                modal.querySelector('div').classList.add('scale-95');
+            }
+        };
+
+        window.verifyAdminPassword = async function() {
+            const emailInput = document.getElementById('admin-email-input').value.trim();
+            const passwordInput = document.getElementById('admin-password-input').value.trim();
+            const errorMsg = document.getElementById('admin-error-msg');
+
+            if (!passwordInput) {
+                if (errorMsg) {
+                    errorMsg.innerText = "비밀번호를 입력해주세요.";
+                    errorMsg.classList.remove('hidden');
+                }
+                return;
+            }
+
+            if (emailInput) {
+                try {
+                    await signInWithEmailAndPassword(auth, emailInput, passwordInput);
+                    window.isAdmin = true;
+                    closeAdminModal();
+                    window.renderAll();
+                    return;
+                } catch (e) {
+                    console.log("Firebase Email Login Attempt Failed, falling back:", e);
+                }
+            }
+
+            // Simple admin verification fallback
+            if (passwordInput === "admin" || passwordInput === "1234") {
+                window.isAdmin = true;
+                if (errorMsg) errorMsg.classList.add('hidden');
+                closeAdminModal();
+                window.renderAll();
+                window.showToast("🔑 관리자로 로그인 되었습니다.");
+            } else {
+                if (errorMsg) {
+                    errorMsg.innerText = "비밀번호가 올바르지 않습니다.";
+                    errorMsg.classList.remove('hidden');
+                }
+            }
+        };
+
+        // About Section Editing
+        window.openEditAboutModal = function() {
+            const headlineInput = document.getElementById('input-headline');
+            const bodyInput = document.getElementById('input-body');
+            
+            if (headlineInput) headlineInput.value = window.state.about.headline || '';
+            if (bodyInput) bodyInput.value = window.state.about.body || '';
+
+            const modal = document.getElementById('edit-about-modal');
+            if (modal) modal.classList.remove('opacity-0', 'pointer-events-none');
+        };
+
+        window.closeEditAboutModal = function() {
+            const modal = document.getElementById('edit-about-modal');
+            if (modal) modal.classList.add('opacity-0', 'pointer-events-none');
+        };
+
+        window.saveAboutInfo = function() {
+            const headline = document.getElementById('input-headline').value.trim();
+            const body = document.getElementById('input-body').value.trim();
+
+            window.state.about = { headline, body };
+            syncStateToStore();
+            renderAbout();
+            closeEditAboutModal();
+            window.showToast("✅ 작가 소개글이 업데이트되었습니다.");
+        };
+
+        // Schedule Modal Controls
+        window.openAddScheduleModal = function() {
+            document.getElementById('sch-title').value = '';
+            document.getElementById('sch-status').value = '예약가능';
+            document.getElementById('sch-date').value = '';
+            document.getElementById('sch-desc').value = '';
+
+            const modal = document.getElementById('schedule-modal');
+            if (modal) modal.classList.remove('opacity-0', 'pointer-events-none');
+        };
+
+        window.closeAddScheduleModal = function() {
+            const modal = document.getElementById('schedule-modal');
+            if (modal) modal.classList.add('opacity-0', 'pointer-events-none');
+        };
+
+        window.saveScheduleItem = function() {
+            const title = document.getElementById('sch-title').value.trim();
+            const status = document.getElementById('sch-status').value;
+            const date = document.getElementById('sch-date').value.trim();
+            const desc = document.getElementById('sch-desc').value.trim();
+
+            if (!title || !date) {
+                window.showToast("⚠️ 슬롯 제목과 날짜를 입력해주세요.");
+                return;
+            }
+
+            const newItem = {
+                id: Date.now(),
+                title,
+                status,
+                date,
+                desc: desc || '세부사항 문의'
+            };
+
+            window.state.schedule.unshift(newItem);
+            syncStateToStore();
+            renderSchedule();
+            closeAddScheduleModal();
+            window.showToast("🗓️ 새로운 작업 일정 슬롯이 추가되었습니다.");
+        };
+
+        window.deleteScheduleItem = function(id) {
+            window.state.schedule = window.state.schedule.filter(item => item.id !== id);
+            syncStateToStore();
+            renderSchedule();
+            window.showToast("🗑️ 일정이 삭제되었습니다.");
+        };
+
+        // Portfolio Modal Controls
+        window.openAddPortfolioModal = function() {
+            document.getElementById('port-title').value = '';
+            document.getElementById('port-category').value = '3D Avatar';
+            document.getElementById('port-image-url').value = '';
+            document.getElementById('port-tags').value = '';
+            document.getElementById('port-desc').value = '';
+            window.uploadedPortImage = "";
+
+            const previewBox = document.getElementById('upload-preview-container');
+            if (previewBox) previewBox.classList.add('hidden');
+
+            const modal = document.getElementById('portfolio-modal');
+            if (modal) modal.classList.remove('opacity-0', 'pointer-events-none');
+        };
+
+        window.closeAddPortfolioModal = function() {
+            const modal = document.getElementById('portfolio-modal');
+            if (modal) modal.classList.add('opacity-0', 'pointer-events-none');
+        };
+
+        window.handleImageFileUpload = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                window.uploadedPortImage = e.target.result;
+                const previewImg = document.getElementById('upload-preview-img');
+                const previewBox = document.getElementById('upload-preview-container');
+                if (previewImg && previewBox) {
+                    previewImg.src = window.uploadedPortImage;
+                    previewBox.classList.remove('hidden');
+                }
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.savePortfolioItem = function() {
+            const title = document.getElementById('port-title').value.trim();
+            const category = document.getElementById('port-category').value;
+            const urlInput = document.getElementById('port-image-url').value.trim();
+            const tagsInput = document.getElementById('port-tags').value.trim();
+            const desc = document.getElementById('port-desc').value.trim();
+
+            const finalImage = window.uploadedPortImage || urlInput || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80';
+
+            if (!title) {
+                window.showToast("⚠️ 작품 제목을 입력해주세요.");
+                return;
+            }
+
+            const tagsArray = tagsInput ? tagsInput.split(',').map(t => t.trim()) : [category];
+
+            const newItem = {
+                id: Date.now(),
+                title,
+                category,
+                tags: tagsArray,
+                desc: desc || '3D Vtuber 제작 프로젝트',
+                image: finalImage
+            };
+
+            window.state.portfolio.unshift(newItem);
+            syncStateToStore();
+            renderPortfolio();
+            closeAddPortfolioModal();
+            window.showToast("🎨 포트폴리오 작품이 등록되었습니다.");
+        };
+
+        window.deletePortfolioItem = function(id) {
+            window.state.portfolio = window.state.portfolio.filter(item => item.id !== id);
+            syncStateToStore();
+            renderPortfolio();
+            window.showToast("🗑️ 작품이 삭제되었습니다.");
+        };
+
+        // Profile Avatar Upload Modal
+        window.openAvatarUploadModal = function() {
+            document.getElementById('avatar-url-input').value = '';
+            window.uploadedAvatarImage = "";
+            const previewBox = document.getElementById('avatar-preview-box');
+            if (previewBox) previewBox.classList.add('hidden');
+
+            const modal = document.getElementById('avatar-upload-modal');
+            if (modal) modal.classList.remove('opacity-0', 'pointer-events-none');
+        };
+
+        window.closeAvatarUploadModal = function() {
+            const modal = document.getElementById('avatar-upload-modal');
+            if (modal) modal.classList.add('opacity-0', 'pointer-events-none');
+        };
+
+        window.handleAvatarFileSelect = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                window.uploadedAvatarImage = e.target.result;
+                const previewImg = document.getElementById('avatar-preview-img');
+                const previewBox = document.getElementById('avatar-preview-box');
+                if (previewImg && previewBox) {
+                    previewImg.src = window.uploadedAvatarImage;
+                    previewBox.classList.remove('hidden');
+                }
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.saveAvatarImage = function() {
+            const urlInput = document.getElementById('avatar-url-input').value.trim();
+            const finalImg = window.uploadedAvatarImage || urlInput;
+
+            window.state.avatarImg = finalImg;
+            syncStateToStore();
+            renderHeaderImages();
+            closeAvatarUploadModal();
+            window.showToast("✨ 프로필 아바타 사진이 변경되었습니다.");
+        };
+
+        // Banner Upload Modal
+        window.openBannerUploadModal = function() {
+            document.getElementById('banner-url-input').value = '';
+            window.uploadedBannerImage = "";
+            const previewBox = document.getElementById('banner-preview-box');
+            if (previewBox) previewBox.classList.add('hidden');
+
+            const modal = document.getElementById('banner-upload-modal');
+            if (modal) modal.classList.remove('opacity-0', 'pointer-events-none');
+        };
+
+        window.closeBannerUploadModal = function() {
+            const modal = document.getElementById('banner-upload-modal');
+            if (modal) modal.classList.add('opacity-0', 'pointer-events-none');
+        };
+
+        window.handleBannerFileSelect = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                window.uploadedBannerImage = e.target.result;
+                const previewImg = document.getElementById('banner-preview-img');
+                const previewBox = document.getElementById('banner-preview-box');
+                if (previewImg && previewBox) {
+                    previewImg.src = window.uploadedBannerImage;
+                    previewBox.classList.remove('hidden');
+                }
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.saveBannerImage = function() {
+            const urlInput = document.getElementById('banner-url-input').value.trim();
+            const finalBanner = window.uploadedBannerImage || urlInput;
+
+            window.state.bannerImg = finalBanner;
+            syncStateToStore();
+            renderHeaderImages();
+            closeBannerUploadModal();
+            window.showToast("🖼️ 배너 커버 배경이 변경되었습니다.");
+        };
+
+        // Lightbox Viewer
+        window.openImageViewer = function(imgSrc, title, desc) {
+            const viewerImg = document.getElementById('viewer-img');
+            const viewerTitle = document.getElementById('viewer-title');
+            const viewerCaption = document.getElementById('viewer-caption');
+
+            if (viewerImg) viewerImg.src = imgSrc;
+            if (viewerTitle) viewerTitle.innerText = title || '작품 상세보기';
+            if (viewerCaption) viewerCaption.innerText = desc || '';
+
+            const modal = document.getElementById('image-viewer-modal');
+            if (modal) modal.classList.remove('opacity-0', 'pointer-events-none');
+        };
+
+        window.closeImageViewer = function() {
+            const modal = document.getElementById('image-viewer-modal');
+            if (modal) modal.classList.add('opacity-0', 'pointer-events-none');
+        };
+
+        // Discord Tag Clipboard Copy
+        window.copyDiscordTag = function() {
+            const tag = "on_n_on";
+            const tempInput = document.createElement("input");
+            tempInput.value = tag;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            try {
+                document.execCommand("copy");
+                window.showToast(`📋 디스코드 아이디 (${tag}) 가 복사되었습니다!`);
+            } catch (err) {
+                window.showToast(`디스코드 아이디: ${tag}`);
+            }
+            document.body.removeChild(tempInput);
+        };
+
+        // Mobile Nav Toggle
+        window.toggleMobileMenu = function() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu) menu.classList.toggle('hidden');
+        };
+
+        // Utility: HTML Escape
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Initialize App Startup
+        window.onload = function() {
+            initDataSync();
+        };
+    </script>
+</body>
+</html>
