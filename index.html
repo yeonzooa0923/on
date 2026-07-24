@@ -305,140 +305,117 @@
 
                 <!-- Direct Commission Banner Button -->
                 <a href="https://artmug.kr/index.php?channel=view&uid=45284" target="_blank" rel="noopener noreferrer" class="group flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-crimson-900 via-crimson-800 to-crimson-950 border border-crimson-700/60 hover:scale-[1.02] transition-transform">
-                    <div>
-                        <span class="block text-[10px] text-crimson-200 font-bold uppercase tracking-wider">Artmug Commission</span>
-                        <span class="text-xs font-bold text-white">아트머그 상세 안내 & 신청</span>
+                    <div class="space-y-0.5">
+                        <span class="block text-[10px] font-bold text-crimson-300 uppercase tracking-wider">Direct Commission</span>
+                        <span class="text-sm font-extrabold text-white flex items-center gap-1.5">
+                            아트머그 외주 신청하기 <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
+                        </span>
                     </div>
-                    <i class="fa-solid fa-circle-arrow-right text-lg text-white group-hover:translate-x-1 transition-transform"></i>
+                    <div class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-white">
+                        <i class="fa-solid fa-paper-plane text-xs"></i>
+                    </div>
                 </a>
             </div>
         </section>
 
-        <!-- SCHEDULE & SLOT STATUS SECTION -->
+        <!-- WORK SCHEDULE SECTION -->
         <section id="schedule" class="bg-cardBg rounded-3xl border border-cardBorder p-6 sm:p-8 space-y-6">
-            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-cardBorder/80 pb-4">
-                <div>
+            <div class="flex items-center justify-between border-b border-cardBorder/80 pb-4">
+                <div class="space-y-1">
                     <h3 class="text-lg font-extrabold text-white flex items-center gap-2.5">
                         <i class="fa-solid fa-calendar-check text-crimson-500"></i>
-                        <span>외주 및 커미션 작업 일정</span>
+                        <span>작업 일정 현황</span>
                     </h3>
-                    <p class="text-xs text-zinc-400 mt-1">실시간 작업 상태 및 예약 가능 슬롯을 확인하세요.</p>
+                    <p class="text-xs text-zinc-400">실시간 외주 및 커미션 예약 슬롯 정보입니다.</p>
                 </div>
-
-                <button id="edit-schedule-btn" onclick="openAddScheduleModal()" class="hidden px-3.5 py-2 rounded-xl bg-crimson-800 hover:bg-crimson-700 text-white text-xs font-bold transition-all shadow-md">
-                    <i class="fa-solid fa-plus mr-1"></i> 일정 슬롯 추가
+                <button id="edit-schedule-btn" onclick="openAddScheduleModal()" class="hidden text-xs font-bold text-white bg-crimson-800 hover:bg-crimson-700 px-3.5 py-2 rounded-xl transition-colors shadow">
+                    <i class="fa-solid fa-plus mr-1"></i> 일정 추가
                 </button>
             </div>
 
-            <!-- Schedule Slot Cards Grid -->
+            <!-- Schedule Slot Cards Container -->
             <div id="schedule-list-container" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <!-- Dynamically rendered via JS -->
+                <!-- Dynamically rendered via JavaScript -->
             </div>
         </section>
 
         <!-- PORTFOLIO SECTION -->
         <section id="portfolio" class="space-y-6">
-            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-cardBorder/80 pb-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-cardBorder/80 pb-4">
                 <div>
-                    <h3 class="text-xl font-black text-white flex items-center gap-2.5">
-                        <i class="fa-solid fa-images text-crimson-500"></i>
-                        <span>포트폴리오 갤러리</span>
+                    <h3 class="text-lg font-extrabold text-white flex items-center gap-2.5">
+                        <i class="fa-solid fa-shapes text-crimson-500"></i>
+                        <span>포트폴리오</span>
                     </h3>
-                    <p class="text-xs text-zinc-400 mt-1">3D 아바타, 툰셰이더 및 버추얼 프로그램 세팅 결과물</p>
+                    <p class="text-xs text-zinc-400 mt-1">ON 작가의 주요 3D 작업 및 셰이더 적용 포트폴리오입니다.</p>
                 </div>
 
-                <!-- Admin Add Portfolio Button -->
-                <button id="add-portfolio-btn" onclick="openAddPortfolioModal()" class="hidden px-4 py-2 rounded-xl bg-crimson-800 hover:bg-crimson-700 text-white text-xs font-bold transition-all shadow-md">
-                    <i class="fa-solid fa-plus mr-1"></i> 새 작품 등록
-                </button>
-            </div>
-
-            <!-- Category Filter Tabs & Settings -->
-            <div class="flex flex-wrap items-center justify-between gap-3">
-                <div class="flex flex-wrap items-center gap-2" id="portfolio-category-filters">
-                    <button onclick="filterPortfolio('all')" class="port-filter-btn active px-3.5 py-1.5 rounded-xl bg-crimson-800 text-white text-xs font-bold transition-all" data-cat="all">전체보기</button>
-                    <button onclick="filterPortfolio('3D Avatar')" class="port-filter-btn px-3.5 py-1.5 rounded-xl bg-lightBlack hover:bg-zinc-800 text-zinc-300 text-xs font-semibold border border-cardBorder transition-all" data-cat="3D Avatar">3D Avatar</button>
-                    <button onclick="filterPortfolio('NiloToon')" class="port-filter-btn px-3.5 py-1.5 rounded-xl bg-lightBlack hover:bg-zinc-800 text-zinc-300 text-xs font-semibold border border-cardBorder transition-all" data-cat="NiloToon">NiloToon</button>
-                    <button onclick="filterPortfolio('Meligo/Warudo')" class="port-filter-btn px-3.5 py-1.5 rounded-xl bg-lightBlack hover:bg-zinc-800 text-zinc-300 text-xs font-semibold border border-cardBorder transition-all" data-cat="Meligo/Warudo">Meligo / Warudo</button>
-                </div>
-            </div>
-
-            <!-- Portfolio Grid Display -->
-            <div id="portfolio-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- JS Dynamic Render -->
-            </div>
-
-            <div id="portfolio-empty-msg" class="hidden text-center py-16 bg-cardBg rounded-3xl border border-cardBorder space-y-2">
-                <i class="fa-regular fa-folder-open text-4xl text-zinc-600"></i>
-                <p class="text-xs font-bold text-zinc-400">해당 카테고리에 등록된 작품이 없습니다.</p>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Footer Section -->
-    <footer class="w-full bg-cardBg border-t border-cardBorder py-8 mt-12">
-        <div class="max-w-6xl mx-auto px-4 text-center space-y-2.5">
-            <div class="flex items-center justify-center gap-2 text-white font-bold text-sm">
-                <i class="fa-solid fa-cube text-crimson-500"></i>
-                <span>ON 3D Portfolio</span>
-            </div>
-            <p class="text-xs text-zinc-500">
-                © 2026 ON 3D. All rights reserved. 본 포트폴리오의 모든 3D 모델링 및 이미지 저작권은 ON 작가에게 있습니다.
-            </p>
-            <p class="text-[11px] text-zinc-600 font-medium tracking-wide">
-                made by. 연주아
-            </p>
-        </div>
-    </footer>
-
-    <!-- MODAL 1: Admin Login Modal -->
-    <div id="admin-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
-        <div class="bg-cardBg rounded-3xl border border-crimson-800/80 p-6 sm:p-8 max-w-sm w-11/12 shadow-2xl crimson-glow transform scale-95 transition-transform duration-300">
-            <div class="flex justify-between items-center mb-4">
                 <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-xl bg-crimson-900 flex items-center justify-center text-white text-xs">
-                        <i class="fa-solid fa-shield-halved"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-white">관리자 인증</h3>
-                </div>
-                <button onclick="closeAdminModal()" class="text-zinc-500 hover:text-white">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
-            
-            <p class="text-xs text-zinc-400 mb-4">등록된 Firebase 관리자 이메일과 비밀번호로 로그인하세요.</p>
-
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-zinc-300 mb-1.5">이메일 계정</label>
-                    <input type="email" id="admin-email-input" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600 font-sans" placeholder="admin@example.com">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-zinc-300 mb-1.5">비밀번호</label>
-                    <input type="password" id="admin-password-input" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600 font-sans" placeholder="비밀번호 입력">
-                </div>
-
-                <div id="admin-error-msg" class="hidden text-xs text-rose-500 font-bold text-center">
-                    로그인 정보가 올바르지 않습니다.
-                </div>
-
-                <div>
-                    <button id="admin-login-submit-btn" onclick="verifyAdminPassword()" class="w-full py-3 rounded-xl bg-crimson-800 hover:bg-crimson-700 text-white font-bold text-xs transition-all shadow-lg shadow-crimson-950/80 flex items-center justify-center gap-2">
-                        <span>Firebase 관리자 로그인</span>
+                    <!-- Add Portfolio Item Button (Admin only) -->
+                    <button id="add-portfolio-btn" onclick="openAddPortfolioModal()" class="hidden text-xs font-bold text-white bg-crimson-800 hover:bg-crimson-700 px-3.5 py-2 rounded-xl transition-colors shadow">
+                        <i class="fa-solid fa-plus mr-1"></i> 작품 등록
                     </button>
                 </div>
+            </div>
+
+            <!-- Portfolio Category Filter Tabs -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+                <button onclick="filterPortfolio('all')" class="port-filter-btn active px-3.5 py-1.5 rounded-xl bg-crimson-800 text-white text-xs font-bold transition-all" data-cat="all">전체보기</button>
+                <button onclick="filterPortfolio('NiloToon')" class="port-filter-btn px-3.5 py-1.5 rounded-xl bg-lightBlack hover:bg-zinc-800 text-zinc-300 text-xs font-semibold border border-cardBorder transition-all" data-cat="NiloToon">NiloToon</button>
+                <button onclick="filterPortfolio('Meligo/Warudo')" class="port-filter-btn px-3.5 py-1.5 rounded-xl bg-lightBlack hover:bg-zinc-800 text-zinc-300 text-xs font-semibold border border-cardBorder transition-all" data-cat="Meligo/Warudo">Meligo & Warudo</button>
+                <button onclick="filterPortfolio('3D Avatar')" class="port-filter-btn px-3.5 py-1.5 rounded-xl bg-lightBlack hover:bg-zinc-800 text-zinc-300 text-xs font-semibold border border-cardBorder transition-all" data-cat="3D Avatar">3D 아바타</button>
+            </div>
+
+            <!-- Portfolio Grid -->
+            <div id="portfolio-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamically rendered via JavaScript -->
+            </div>
+
+            <!-- Empty State Message -->
+            <div id="portfolio-empty-msg" class="hidden text-center py-16 bg-cardBg rounded-3xl border border-cardBorder space-y-2">
+                <i class="fa-regular fa-folder-open text-4xl text-zinc-600 mb-2"></i>
+                <p class="text-sm font-bold text-zinc-400">해당 카테고리의 작품이 없습니다.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- MODAL 1: Admin Password Authentication Modal -->
+    <div id="admin-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
+        <div class="bg-cardBg rounded-3xl border border-cardBorder p-6 sm:p-8 max-w-sm w-11/12 shadow-2xl space-y-5 transform scale-95 transition-transform duration-300">
+            <div class="flex justify-between items-center border-b border-cardBorder pb-3">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-lock text-crimson-500"></i> 관리자 로그인
+                </h3>
+                <button onclick="closeAdminModal()" class="text-zinc-500 hover:text-white transition-colors"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-zinc-300 mb-1">Firebase 관리자 이메일</label>
+                    <input type="email" id="admin-email-input" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600 transition-colors" placeholder="admin@example.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-zinc-300 mb-1">비밀번호</label>
+                    <input type="password" id="admin-password-input" onkeyup="if(event.key==='Enter') verifyAdminPassword()" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600 transition-colors" placeholder="••••••••">
+                </div>
+                <p id="admin-error-msg" class="hidden text-[11px] font-bold text-rose-400"></p>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2">
+                <button onclick="closeAdminModal()" class="px-4 py-2 rounded-xl bg-lightBlack text-zinc-400 text-xs font-bold hover:text-white transition-colors">취소</button>
+                <button id="admin-login-submit-btn" onclick="verifyAdminPassword()" class="px-5 py-2 rounded-xl bg-crimson-800 hover:bg-crimson-700 text-white text-xs font-bold transition-all flex items-center gap-2">
+                    <span>Firebase 관리자 로그인</span>
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL 2: Edit About Info Modal -->
+    <!-- MODAL 2: Edit About Intro Modal -->
     <div id="edit-about-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
         <div class="bg-cardBg rounded-3xl border border-cardBorder p-6 sm:p-8 max-w-lg w-11/12 shadow-2xl space-y-4">
             <div class="flex justify-between items-center border-b border-cardBorder pb-3">
                 <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-pen-to-square text-crimson-500"></i> 작가 소개 문구 수정
+                    <i class="fa-solid fa-pen-to-square text-crimson-500"></i> 작가 소개 수정
                 </h3>
                 <button onclick="closeEditAboutModal()" class="text-zinc-500 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
@@ -448,10 +425,9 @@
                     <label class="block text-xs font-bold text-zinc-300 mb-1">메인 헤드라인</label>
                     <input type="text" id="input-headline" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600">
                 </div>
-
                 <div>
-                    <label class="block text-xs font-bold text-zinc-300 mb-1">상세 소개 본문 (줄바꿈 구분)</label>
-                    <textarea id="input-body" rows="6" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600 leading-relaxed"></textarea>
+                    <label class="block text-xs font-bold text-zinc-300 mb-1">소개 본문 내용 (줄바꿈 구분)</label>
+                    <textarea id="input-body" rows="6" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600"></textarea>
                 </div>
             </div>
 
@@ -462,24 +438,24 @@
         </div>
     </div>
 
-    <!-- MODAL 3: Add Schedule Slot Modal -->
+    <!-- MODAL 3: Add Schedule Modal -->
     <div id="schedule-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
         <div class="bg-cardBg rounded-3xl border border-cardBorder p-6 sm:p-8 max-w-md w-11/12 shadow-2xl space-y-4">
             <div class="flex justify-between items-center border-b border-cardBorder pb-3">
                 <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-calendar-plus text-crimson-500"></i> 작업 일정 추가
+                    <i class="fa-solid fa-calendar-plus text-crimson-500"></i> 새 작업 일정 추가
                 </h3>
                 <button onclick="closeAddScheduleModal()" class="text-zinc-500 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
 
             <div class="space-y-3">
                 <div>
-                    <label class="block text-xs font-bold text-zinc-300 mb-1">슬롯 제목</label>
-                    <input type="text" id="sch-title" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600" placeholder="예: 9월 1차 슬롯">
+                    <label class="block text-xs font-bold text-zinc-300 mb-1">일정 제목 (예: 9월 1차 슬롯)</label>
+                    <input type="text" id="sch-title" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-zinc-300 mb-1">작업 상태</label>
+                    <label class="block text-xs font-bold text-zinc-300 mb-1">진행 상태</label>
                     <select id="sch-status" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600">
                         <option value="예약가능">예약가능</option>
                         <option value="작업중">작업중</option>
@@ -488,13 +464,13 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-zinc-300 mb-1">작업 기간 / 날짜</label>
-                    <input type="text" id="sch-date" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600" placeholder="예: 2026.09.01 ~ 09.15">
+                    <label class="block text-xs font-bold text-zinc-300 mb-1">작업 기간</label>
+                    <input type="text" id="sch-date" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600" placeholder="2026.09.01 ~ 09.15">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-zinc-300 mb-1">설명</label>
-                    <input type="text" id="sch-desc" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600" placeholder="작업 상세 조건">
+                    <label class="block text-xs font-bold text-zinc-300 mb-1">세부 안내 설명</label>
+                    <textarea id="sch-desc" rows="2" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600" placeholder="작업 유형 및 추가 참고사항"></textarea>
                 </div>
             </div>
 
@@ -510,7 +486,7 @@
         <div class="bg-cardBg rounded-3xl border border-cardBorder p-6 sm:p-8 max-w-lg w-11/12 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b border-cardBorder pb-3">
                 <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-plus-circle text-crimson-500"></i> 새 포트폴리오 작품 등록
+                    <i class="fa-solid fa-folder-plus text-crimson-500"></i> 새 포트폴리오 작품 등록
                 </h3>
                 <button onclick="closeAddPortfolioModal()" class="text-zinc-500 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
@@ -518,25 +494,25 @@
             <div class="space-y-3">
                 <div>
                     <label class="block text-xs font-bold text-zinc-300 mb-1">작품 제목</label>
-                    <input type="text" id="port-title" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600" placeholder="작품 이름">
+                    <input type="text" id="port-title" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600" placeholder="예: NiloToon 버추얼 아바타 풀셋">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-zinc-300 mb-1">카테고리</label>
+                    <label class="block text-xs font-bold text-zinc-300 mb-1">대표 카테고리</label>
                     <select id="port-category" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600">
-                        <option value="3D Avatar">3D Avatar</option>
                         <option value="NiloToon">NiloToon</option>
                         <option value="Meligo/Warudo">Meligo / Warudo</option>
+                        <option value="3D Avatar">3D 아바타</option>
                     </select>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-zinc-300 mb-1">사진 업로드 (자동 압축 및 최적화 지원)</label>
+                    <label class="block text-xs font-bold text-zinc-300 mb-1">사진 업로드 (용량 제한 없이 자동 최적화)</label>
                     <input type="file" id="port-file-input" accept="image/*" class="hidden">
                     <label for="port-file-input" class="flex flex-col items-center justify-center p-4 border-2 border-dashed border-cardBorder hover:border-crimson-700 bg-lightBlack rounded-2xl cursor-pointer transition-colors group">
                         <i class="fa-solid fa-cloud-arrow-up text-2xl text-zinc-500 group-hover:text-crimson-500 mb-1"></i>
                         <span class="text-xs font-bold text-zinc-300">내 PC에서 이미지 파일 선택</span>
-                        <span class="text-[10px] text-zinc-500 mt-0.5">고화질 사진 선택 시 자동 최적화 처리됩니다</span>
+                        <span class="text-[10px] text-zinc-500 mt-0.5">대용량 고화질 이미지도 용량 제한 없이 자동 처리됩니다</span>
                     </label>
                     
                     <div class="text-center text-[10px] text-zinc-500 my-1 font-bold">또는 URL 직접 입력</div>
@@ -581,7 +557,7 @@
                 <label for="avatar-file-input" class="flex flex-col items-center justify-center p-6 border-2 border-dashed border-cardBorder hover:border-crimson-700 bg-lightBlack rounded-2xl cursor-pointer transition-colors group">
                     <i class="fa-solid fa-image text-3xl text-zinc-500 group-hover:text-crimson-500 mb-2 transition-colors"></i>
                     <span class="text-xs font-bold text-zinc-300">내 PC에서 이미지/GIF 선택</span>
-                    <span class="text-[10px] text-zinc-500 mt-0.5">GIF 애니메이션 및 투명 PNG 지원</span>
+                    <span class="text-[10px] text-zinc-500 mt-0.5">대용량 GIF 및 모든 용량의 투명 PNG/이미지 지원</span>
                 </label>
 
                 <div class="text-center text-[10px] text-zinc-500 font-bold uppercase">또는 이미지 URL</div>
@@ -616,7 +592,7 @@
                 <label for="banner-file-input" class="flex flex-col items-center justify-center p-6 border-2 border-dashed border-cardBorder hover:border-crimson-700 bg-lightBlack rounded-2xl cursor-pointer transition-colors group">
                     <i class="fa-solid fa-cloud-arrow-up text-3xl text-zinc-500 group-hover:text-crimson-500 mb-2 transition-colors"></i>
                     <span class="text-xs font-bold text-zinc-300">내 PC에서 커버/GIF 선택</span>
-                    <span class="text-[10px] text-zinc-500 mt-0.5">움직이는 GIF 및 이미지 지원</span>
+                    <span class="text-[10px] text-zinc-500 mt-0.5">용량 제한 없는 GIF 및 대용량 커버 이미지 지원</span>
                 </label>
 
                 <div class="text-center text-[10px] text-zinc-500 font-bold uppercase">또는 이미지 URL</div>
@@ -801,16 +777,17 @@
                 setTimeout(() => {
                     toast.classList.remove('translate-y-0', 'opacity-100');
                     toast.classList.add('translate-y-20', 'opacity-0');
-                }, 3200);
+                }, 3000);
             }
         };
 
-        // Helper: Image Compression Engine (Canvas Resize to prevent Firestore 1MB limits)
-        window.compressImageFile = function(file, maxWidth = 1000, maxHeight = 1000, quality = 0.8) {
+        // Helper: Image Compression Engine (Canvas Resize & Auto-Optimization)
+        window.compressImageFile = function(file, maxWidth = 1600, maxHeight = 1600, quality = 0.85) {
             return new Promise((resolve, reject) => {
                 if (!file) return reject("파일이 존재하지 않습니다.");
                 
-                if (file.type === 'image/gif' && file.size < 800000) {
+                // Allow GIF of any size to retain full animation without canvas flattening or size restriction
+                if (file.type === 'image/gif') {
                     const reader = new FileReader();
                     reader.onload = (e) => resolve(e.target.result);
                     reader.onerror = reject;
@@ -848,7 +825,13 @@
                         ctx.drawImage(img, 0, 0, width, height);
 
                         const format = isPng ? 'image/png' : 'image/jpeg';
-                        resolve(canvas.toDataURL(format, quality));
+                        let dataUrl = canvas.toDataURL(format, quality);
+
+                        // Ensure large photos automatically fit safely within database transmission limits without failing
+                        if (dataUrl.length > 950000) {
+                            dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                        }
+                        resolve(dataUrl);
                     };
                     img.onerror = () => reject("이미지를 로드할 수 없습니다.");
                     img.src = e.target.result;
@@ -1217,13 +1200,13 @@
 
                 try {
                     window.showToast("⏳ 이미지 최적화 처리 중...");
-                    const compressed = await window.compressImageFile(file, 1200, 1200, 0.85);
+                    const compressed = await window.compressImageFile(file, 1600, 1600, 0.88);
                     window.uploadedPortImage = compressed;
                     
                     const previewImg = document.getElementById('upload-preview-img');
                     previewImg.src = compressed;
                     document.getElementById('upload-preview-container').classList.remove('hidden');
-                    window.showToast("✨ 이미지 최적화 완결!");
+                    window.showToast("✨ 이미지 최적화 완료!");
                 } catch (err) {
                     window.showToast("⚠️ 이미지 처리 실패: " + err, true);
                 }
