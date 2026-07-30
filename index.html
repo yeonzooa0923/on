@@ -196,9 +196,9 @@
                             </h1>
                         </div>
                         
-                        <!-- Single-line Subtitle -->
-                        <div class="w-full py-1 text-xs sm:text-sm text-zinc-300 font-medium leading-relaxed break-keep sm:whitespace-nowrap">
-                            3D 아바타 제작 · 멜리고(Meligo) · 와루도(Warudo) · 닐로툰(NiloToon) 셰이더 세팅 전문 작가
+                        <!-- Single-line Subtitle including Magica Cloth2 -->
+                        <div class="w-full py-1 text-xs sm:text-sm text-zinc-300 font-medium leading-relaxed break-keep">
+                            3D 아바타 제작 · 멜리고(Meligo) · 와루도(Warudo) · 닐로툰(NiloToon) 셰이더 · 매지카 클로스 2(Magica Cloth 2) 세팅 전문 작가
                         </div>
                     </div>
 
@@ -215,6 +215,9 @@
                         </span>
                         <span class="px-3 py-1 rounded-xl bg-lightBlack border border-crimson-900/60 text-crimson-300 text-xs font-bold flex items-center gap-1.5 shadow-sm">
                             <i class="fa-solid fa-palette text-crimson-500 text-[10px]"></i> NiloToon
+                        </span>
+                        <span class="px-3 py-1 rounded-xl bg-lightBlack border border-crimson-900/60 text-crimson-300 text-xs font-bold flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-shirt text-crimson-500 text-[10px]"></i> Magica Cloth 2
                         </span>
                     </div>
                 </div>
@@ -265,8 +268,8 @@
                         <span class="text-xs font-bold text-crimson-400">Warudo & Meligo</span>
                     </div>
                     <div class="p-3 rounded-2xl bg-lightBlack border border-cardBorder/60 text-center">
-                        <span class="block text-[11px] text-zinc-400 font-semibold mb-1">셰이더 표현</span>
-                        <span class="text-xs font-bold text-crimson-400">NiloToon & MToon</span>
+                        <span class="block text-[11px] text-zinc-400 font-semibold mb-1">물리 & 셰이더</span>
+                        <span class="text-xs font-bold text-crimson-400">Magica Cloth2 / NiloToon</span>
                     </div>
                     <div class="p-3 rounded-2xl bg-lightBlack border border-cardBorder/60 text-center col-span-2 sm:col-span-1">
                         <span class="block text-[11px] text-zinc-400 font-semibold mb-1">지원 포맷</span>
@@ -290,15 +293,15 @@
                         </li>
                         <li class="flex items-start gap-2.5 p-2.5 rounded-xl bg-lightBlack/80 border border-cardBorder/60">
                             <i class="fa-solid fa-check text-crimson-500 mt-0.5"></i>
+                            <span>Magica Cloth 2 및 PhysBone 정밀 물리 세팅</span>
+                        </li>
+                        <li class="flex items-start gap-2.5 p-2.5 rounded-xl bg-lightBlack/80 border border-cardBorder/60">
+                            <i class="fa-solid fa-check text-crimson-500 mt-0.5"></i>
                             <span>NiloToon 툰셰이더 룩뎁 연출 및 재질 세팅</span>
                         </li>
                         <li class="flex items-start gap-2.5 p-2.5 rounded-xl bg-lightBlack/80 border border-cardBorder/60">
                             <i class="fa-solid fa-check text-crimson-500 mt-0.5"></i>
                             <span>Meligo / Warudo 전용 아바타 셋업 및 오버레이</span>
-                        </li>
-                        <li class="flex items-start gap-2.5 p-2.5 rounded-xl bg-lightBlack/80 border border-cardBorder/60">
-                            <i class="fa-solid fa-check text-crimson-500 mt-0.5"></i>
-                            <span>표정 블렌드셰입 & 물리 세팅</span>
                         </li>
                     </ul>
                 </div>
@@ -347,7 +350,7 @@
                         <i class="fa-solid fa-shapes text-crimson-500"></i>
                         <span>포트폴리오</span>
                     </h3>
-                    <p class="text-xs text-zinc-400 mt-1">ON 작가의 주요 3D 작업 및 셰이더 적용 포트폴리오입니다.</p>
+                    <p class="text-xs text-zinc-400 mt-1">ON 작가의 주요 3D 작업 및 셰이더/물리 세팅 포트폴리오입니다.</p>
                 </div>
 
                 <div class="flex items-center gap-2">
@@ -361,6 +364,7 @@
             <!-- Portfolio Category Filter Tabs -->
             <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
                 <button onclick="filterPortfolio('all')" class="port-filter-btn active px-3.5 py-1.5 rounded-xl bg-crimson-800 text-white text-xs font-bold transition-all" data-cat="all">전체보기</button>
+                <button onclick="filterPortfolio('Magica Cloth 2')" class="port-filter-btn px-3.5 py-1.5 rounded-xl bg-lightBlack hover:bg-zinc-800 text-zinc-300 text-xs font-semibold border border-cardBorder transition-all" data-cat="Magica Cloth 2">Magica Cloth 2</button>
                 <button onclick="filterPortfolio('NiloToon')" class="port-filter-btn px-3.5 py-1.5 rounded-xl bg-lightBlack hover:bg-zinc-800 text-zinc-300 text-xs font-semibold border border-cardBorder transition-all" data-cat="NiloToon">NiloToon</button>
                 <button onclick="filterPortfolio('Meligo/Warudo')" class="port-filter-btn px-3.5 py-1.5 rounded-xl bg-lightBlack hover:bg-zinc-800 text-zinc-300 text-xs font-semibold border border-cardBorder transition-all" data-cat="Meligo/Warudo">Meligo & Warudo</button>
                 <button onclick="filterPortfolio('3D Avatar')" class="port-filter-btn px-3.5 py-1.5 rounded-xl bg-lightBlack hover:bg-zinc-800 text-zinc-300 text-xs font-semibold border border-cardBorder transition-all" data-cat="3D Avatar">3D 아바타</button>
@@ -494,12 +498,13 @@
             <div class="space-y-3">
                 <div>
                     <label class="block text-xs font-bold text-zinc-300 mb-1">작품 제목</label>
-                    <input type="text" id="port-title" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600" placeholder="예: NiloToon 버추얼 아바타 풀셋">
+                    <input type="text" id="port-title" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600" placeholder="예: Magica Cloth 2 의상 물리 셋업">
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-zinc-300 mb-1">대표 카테고리</label>
                     <select id="port-category" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600">
+                        <option value="Magica Cloth 2">Magica Cloth 2</option>
                         <option value="NiloToon">NiloToon</option>
                         <option value="Meligo/Warudo">Meligo / Warudo</option>
                         <option value="3D Avatar">3D 아바타</option>
@@ -525,7 +530,7 @@
 
                 <div>
                     <label class="block text-xs font-bold text-zinc-300 mb-1">해시태그 (쉼표로 구분)</label>
-                    <input type="text" id="port-tags" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600" placeholder="3D Avatar, NiloToon, Warudo">
+                    <input type="text" id="port-tags" class="w-full bg-lightBlack border border-cardBorder text-white text-xs rounded-xl p-3 outline-none focus:border-crimson-600" placeholder="MagicaCloth2, PhysBone, Warudo">
                 </div>
 
                 <div>
@@ -673,10 +678,10 @@
         // Firestore Public Doc Reference
         const siteDocRef = doc(db, 'artifacts', appId, 'public', 'siteContent');
 
-        // Default Initial Data
+        // Default Initial Data with Magica Cloth 2 Included
         const DEFAULT_ABOUT = {
-            headline: "안녕하세요, 3D 버추얼 아바타 제작 & 툰셰이더 셋업을 전문으로 하는 ON 입니다.",
-            body: `시청자와의 몰입감 넘치는 소통을 위한 최적의 3D 아바타 제작을 진행합니다.\nMeligo, Warudo, NiloToon 셰이더 및 다양한 트래킹 프로그램 최적화 경험을 바탕으로 개성 있고 매력적인 3D 버추얼 캐릭터를 완성해 드립니다.\n의상 및 헤어 세팅, 표정 모프(Morph), 툰셰이더 감성 연출, 물리 연동(PhysBone/Physics)까지 자연스럽고 완성도 높은 결과물을 보장합니다.`
+            headline: "안녕하세요, 3D 버추얼 아바타 제작, Magica Cloth 2 물리 셋업 & 툰셰이더 전문 작가 ON 입니다.",
+            body: `시청자와의 몰입감 넘치는 소통을 위한 최적의 3D 아바타 제작을 진행합니다.\nMeligo, Warudo, NiloToon 셰이더 및 Magica Cloth 2를 포함한 최신 물리 엔진 연동 경험을 바탕으로 개성 있고 매력적인 3D 버추얼 캐릭터를 완성해 드립니다.\n의상 및 헤어 다이나믹 세팅, 표정 모프(Morph), 툰셰이더 감성 연출, Magica Cloth 2/PhysBone 물리 연동까지 자연스럽고 완성도 높은 결과물을 보장합니다.`
         };
 
         const DEFAULT_SCHEDULE = [
@@ -685,14 +690,14 @@
                 title: "8월 1차 슬롯 (3D 풀셋업)",
                 status: "마감",
                 date: "2026.08.01 ~ 08.15",
-                desc: "3D 아바타 모델링 & NiloToon 셰이더 적용 완결"
+                desc: "3D 아바타 모델링 & NiloToon 셰이더 및 Magica Cloth 2 적용 완결"
             },
             {
                 id: 2,
                 title: "8월 2차 슬롯 (Warudo/Meligo 셋업)",
                 status: "작업중",
                 date: "2026.08.16 ~ 08.28",
-                desc: "의상 셋업 및 오버레이 물리 연동 작업 진행 중"
+                desc: "의상 Magica Cloth 2 셋업 및 오버레이 물리 연동 작업 진행 중"
             },
             {
                 id: 3,
@@ -705,6 +710,14 @@
 
         const DEFAULT_PORTFOLIO = [
             {
+                id: 100,
+                title: "Magica Cloth 2 의상 물리 & 충돌 세팅",
+                category: "Magica Cloth 2",
+                tags: ["MagicaCloth2", "Physics", "3DAvatar"],
+                desc: "Magica Cloth 2를 적용하여 치마, 자켓 및 롱헤어의 자연스럽고 뚫림 없는 다이나믹 물리 시뮬레이션 세팅.",
+                image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80"
+            },
+            {
                 id: 101,
                 title: "NiloToon 툰셰이더 3D 버추얼 아바타",
                 category: "NiloToon",
@@ -716,8 +729,8 @@
                 id: 102,
                 title: "Warudo / Meligo 오버레이 의상 세팅",
                 category: "Meligo/Warudo",
-                tags: ["Meligo", "Warudo", "PhysBone"],
-                desc: "실시간 트래킹 최적화 및 의상 물리 세팅 적용 완료 모델.",
+                tags: ["Meligo", "Warudo", "MagicaCloth2"],
+                desc: "실시간 트래킹 최적화 및 의상 Magica Cloth 2 물리 세팅 적용 완료 모델.",
                 image: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=800&q=80"
             },
             {
